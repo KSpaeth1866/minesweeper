@@ -14,6 +14,7 @@
 - When a square is clicked reveal if its a mine or reveal all bordering squares with the number adjacent mines
 - When a square not bordering a mine is clicked reveal all bordering empty and bordering mine squares
 - You can mark squares you think are mines
+    - This prevents them from being clicked on, but you can erroneously mark non-mines
 
 ## Running
 - npm install
