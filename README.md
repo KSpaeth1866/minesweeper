@@ -1,17 +1,19 @@
 # Minesweeper
 
+![](./assets/mine-example.png)
+
+## Goals
+
 - Runs entirely in the browser, does not require any backend code
-- All state needs to be in the browser (localStorage)
+    - All state needs to be in the browser (localStorage)
 - Let the player control the size of the board and number of mines added
 - Use only jQuery
 
-![](./assets/mine-example.png)
-
 ## Rules
-- Game goal is to find/mark all mines
+- You win if you uncover every non-mine square
 - When a square is clicked reveal if its a mine or reveal all bordering squares with the number adjacent mines
 - When a square not bordering a mine is clicked reveal all bordering empty and bordering mine squares
-- Let users mark squares they think have a mine
+- You can mark squares you think are mines
 
 ## Running
 - npm install
