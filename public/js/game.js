@@ -66,6 +66,12 @@ const genEmptyMessage = (messageType) => {
   `;
 };
 
+const genTimerMessage = (timeElapsed) => {
+  return `
+    <div id=gameTimer class="message">${timeElapsed} seconds</div>
+  `;
+};
+
 const genNewBoard = (rows, cols, nBombs) => {
   const sqs = {};
 
@@ -194,6 +200,7 @@ const displayGameEndMessage = (didWin) => {
 
 const clearMessages = () => {
   $('#gameEnd').replaceWith(genEmptyMessage('gameEnd'));
+  $('#gameTimer').replaceWith(genEmptyMessage('gameTimer'));
 };
 
 const revealBombs = (didWin) => {
@@ -208,20 +215,20 @@ const revealBombs = (didWin) => {
 };
 
 const startGameTimer = () => {
-  console.log('starting game timer');
   const state = getState();
   const startTime = new Date().getTime();
   const timerId = setInterval(setTimer, 1000);
   state.startTime = startTime;
   state.timerId = timerId;
   state.isGameStarted = true;
+  $('#gameTimer').replaceWith(genTimerMessage(0));
   saveState(state);
 };
 
 const setTimer = () => {
   const state = getState();
   const timeElapsed = Math.round((new Date().getTime() - state.startTime)/1000);
-  console.log('setting time', timeElapsed);
+  $('#gameTimer').replaceWith(genTimerMessage(timeElapsed));
 };
 
 const clearTimer = (timerId) => {
