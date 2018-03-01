@@ -91,6 +91,9 @@ const genNewBoard = (rows, cols, nBombs) => {
     numFlagged: 0,
     isGameOver: false,
     areBombsSet: false,
+    isGameStarted: false,
+    startTime: null,
+    timerId: null,
   };
   saveState(state);
 };
@@ -179,6 +182,7 @@ const revealSq = (id) => {
 const endGame = (didWin) => {
   const state = getState();
   state.isGameOver = true;
+  clearInterval(state.timerId);
   displayGameEndMessage(didWin);
   revealBombs(didWin);
   saveState(state);
@@ -203,7 +207,30 @@ const revealBombs = (didWin) => {
   }
 };
 
-const incrTimer()
+const startGameTimer = () => {
+  console.log('starting game timer');
+  const state = getState();
+  const startTime = new Date().getTime();
+  const timerId = setInterval(setTimer, 1000);
+  state.startTime = startTime;
+  state.timerId = timerId;
+  state.isGameStarted = true;
+  saveState(state);
+};
+
+const setTimer = () => {
+  const state = getState();
+  const timeElapsed = Math.round((new Date().getTime() - state.startTime)/1000);
+  console.log('setting time', timeElapsed);
+};
+
+const clearTimer = (timerId) => {
+  if (!timerId) {
+    const state = getState();
+    clearInterval(state.timerId);
+  }
+  else clearInterval(timerId);
+};
 
 $(document).ready(() => {
 
@@ -219,6 +246,7 @@ $(document).ready(() => {
     const cols = $('#colsInput').val() ? $('#colsInput').val() : 10;
     const nBombs = $('#bombsInput').val() ? $('#bombsInput').val() : 20;
     clearMessages();
+    clearTimer();
     genNewBoard(rows, cols, nBombs);
   });
 
@@ -227,6 +255,7 @@ $(document).ready(() => {
     state = getState();
     const id = e.target.id.slice(2);
     if (!state.areBombsSet) setUpBombs(id);
+    if (!state.isGameStarted) startGameTimer();
     if (state.isGameOver) return;
     else if (state.sqs[id].isSelected) return;
     else if (state.sqs[id].isFlagged) return;
