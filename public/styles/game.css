@@ -44,6 +44,10 @@ table {
   border-spacing: 0;
 }
 
+.hide {
+  display: none;
+}
+
 .title {
   text-align: center;
   padding: 20px;
@@ -87,4 +91,29 @@ table {
 
 .emptySq {
   background-color: #6b6b6b;
+}
+
+.blue {
+  color: blue;
+}
+.green {
+  color: green;
+}
+.red {
+  color: red;
+}
+.navy {
+  color: navy;
+}
+.maroon {
+  color: maroon;
+}
+.teal {
+  color: teal;
+}
+.yellow {
+  color: blue;
+}
+.black {
+  color: black;
 }

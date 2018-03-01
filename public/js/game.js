@@ -18,9 +18,10 @@ const genSq = (row, col) => {
 };
 
 const genNumSq = (row, col, num) => {
+  const color = ['', 'blue', 'green', 'red', 'navy', 'maroon', 'teal', 'yellow', 'black'][num];
   return `
     <div
-      class="sq revealedNotBomb"
+      class="sq revealedNotBomb ${color}"
       id=sq${row}-${col}
     >${num ? num : ""}</div>
   `;
@@ -30,7 +31,7 @@ const genFlaggedSq = (row, col) => {
   return `
     <img
       class="sq"
-      src="flag.png"
+      src="./resources/flag.png"
       id=sq${row}-${col}
     ></img>
   `;
@@ -41,7 +42,7 @@ const genRevealedBomb = (row, col, didWin) => {
   return `
     <img
       class="sq ${revealed}"
-      src="mine.png"
+      src="./resources/mine.png"
       id=sq${row}-${col}
     ></img>
   `;
@@ -50,6 +51,18 @@ const genRevealedBomb = (row, col, didWin) => {
 const genRow = (rowNum) => {
   return `
     <div class="row" id=row${rowNum}></div>
+  `;
+};
+
+const genGameEndMessage = (didWin) => {
+  return `
+    <div id="gameEnd" class="message">${didWin ? "You won :)" : "You lost :("}</div>
+  `;
+};
+
+const genEmptyMessage = (messageType) => {
+  return `
+    <div id=${messageType} class="message hide"></div>
   `;
 };
 
@@ -83,8 +96,8 @@ const genNewBoard = (rows, cols, nBombs) => {
 };
 
 // TODO: create existing board from state
-const genExistingBoard = () => {
-};
+// const genExistingBoard = () => {
+// };
 
 const setUpBombs = (id) => {
   const state = getState();
@@ -166,9 +179,17 @@ const revealSq = (id) => {
 const endGame = (didWin) => {
   const state = getState();
   state.isGameOver = true;
-  if (didWin) alert('you win!');
+  displayGameEndMessage(didWin);
   revealBombs(didWin);
   saveState(state);
+};
+
+const displayGameEndMessage = (didWin) => {
+  $('#gameEnd').replaceWith(genGameEndMessage(didWin));
+};
+
+const clearMessages = () => {
+  $('#gameEnd').replaceWith(genEmptyMessage('gameEnd'));
 };
 
 const revealBombs = (didWin) => {
@@ -182,6 +203,8 @@ const revealBombs = (didWin) => {
   }
 };
 
+const incrTimer()
+
 $(document).ready(() => {
 
   // localStorage.clear();
@@ -190,11 +213,12 @@ $(document).ready(() => {
 
   let hoverSqId = null;
 
-  $('#newGameButton').click((e)=>{
+  $('#newGameButton').click((e) => {
     e.preventDefault();
     const rows = $('#rowsInput').val() ? $('#rowsInput').val() : 10;
     const cols = $('#colsInput').val() ? $('#colsInput').val() : 10;
     const nBombs = $('#bombsInput').val() ? $('#bombsInput').val() : 20;
+    clearMessages();
     genNewBoard(rows, cols, nBombs);
   });
 
@@ -203,7 +227,7 @@ $(document).ready(() => {
     state = getState();
     const id = e.target.id.slice(2);
     if (!state.areBombsSet) setUpBombs(id);
-    if (state.isGameOver) alert('The game is over! Please start a new game');
+    if (state.isGameOver) return;
     else if (state.sqs[id].isSelected) return;
     else if (state.sqs[id].isFlagged) return;
     else if (state.sqs[id].isBomb) endGame(false);

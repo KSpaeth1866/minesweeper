@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <title>Minesweeper</title>
-  <link link rel="stylesheet" type="text/css" href="./game.css"/>
+  <link link rel="stylesheet" type="text/css" href="./styles/game.css"/>
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-  <script src="./game.js"></script>
+  <script src="./js/game.js"></script>
 </head>
 <body>
   <div class="title">
@@ -24,6 +24,7 @@
       <input type="number" name="bombsInput" id="bombsInput">
     </div>
     <button id="newGameButton">New Game</button>
+    <div id="gameEnd" class="message hide"></div>
   </div>
 
   <div id="boardAnchor" class="board"></div>
